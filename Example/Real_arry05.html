@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>실시간 재고 관리</title>
+    <style>
+      body {
+        font-family: '맑은 고딕', sans-serif;
+      }
+      .row {
+        margin: 8px 0;
+      }
+      .row button {
+        width: 30px;
+        font-weight: bold;
+        margin-left: 6px;
+      }
+      .total {
+        font-weight: bold;
+        color: green;
+        margin-top: 12px;
+      }
+      .zero {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>실시간 재고 관리</h2>
+    <div id="output5"></div>
+
+    <script>
+      // 상품이름과 재고수량을 저장하는 배열을 따로 만든다
+      let products = ['노트북', '마우스', '키보드'];
+      let stock = [5, 12, 0];
+
+      // 재고를 1 증가
+      function increase(i) {
+        stock[i]++;
+        render();
+      }
+
+      // 재고를 1 감소 (0 미만으로는 내려가지 않음)
+      function decrease(i) {
+        if (stock[i] > 0) {
+          stock[i]--;
+        }
+        render();
+      }
+
+      // 화면을 다시 그리는 함수
+      function render() {
+        let result = '';
+        let total = 0;
+
+        for (let i = 0; i < products.length; i++) {
+          let className = stock[i] === 0 ? 'zero' : '';
+          result +=
+            '<div class="row">' +
+            products[i] +
+            " : <span class='" +
+            className +
+            "'>" +
+            stock[i] +
+            '개</span>' +
+            " <button onclick='decrease(" +
+            i +
+            ")'>-</button>" +
+            " <button onclick='increase(" +
+            i +
+            ")'>+</button>" +
+            '</div>';
+          total += stock[i];
+        }
+
+        result += "<div class='total'>총 재고 : " + total + '개</div>';
+        document.getElementById('output5').innerHTML = result;
+      }
+
+      // 처음 화면 로딩 시 바로 출력
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>배열연습문제 08</title>
+  </head>
+  <body>
+    <div class="question">
+      <label>1번 점수 배열 입력 (예: 95,67,88,55,100,75)</label>
+      <input type="text" id="scoreInput" />
+      <button onclick="scorePrint()">결과 확인</button>
+      <p id="q1"></p>
+    </div>
+    <script>
+      // let scores = [95, 67, 80, 55, 100, 72];
+      let scoreInput = document.getElementById('scoreInput');
+      let q1 = document.getElementById('q1');
+      function scorePrint() {
+        let score = scoreInput.value;
+        let scores = score.split(',');
+        console.log('scores :' + scores);
+        let result = '';
+
+        scores.forEach((scoreItem, i) => {
+          if (scoreItem >= 90) result += scoreItem + '점: A, ';
+          else if (scoreItem >= 80) result += scoreItem + '점: B, ';
+          else if (scoreItem >= 70) result += scoreItem + '점: C, ';
+          else result += scoreItem + '점: F, ';
+
+          console.log(`${i + 1}번째 점수: ${scoreItem}점 -> 학점: ${result}`);
+        });
+
+        // result.slice(0, -2)는 "문자열의 처음(인덱스 0)부터 시작해서,
+        // 맨 뒤에서 2글자를 뺀 나머지 부분까지 잘라내라"는 뜻이다.
+        //     0    1    2    3    ...   22   23   24   25   26   27   (양수 인덱스/경계)
+        // ───┬───┬───┬───┬───┬───┬ ... ┬───┬───┬───┬───┬───┬───┬───┬───
+        //    │ 9 │ 5 │ 점│ : │   │ ... │ 8 │ 8 │ 점 │ :│   │ B │ , │   │
+        // ───┴───┴───┴───┴───┴───┴ ... ┴───┴───┴───┴───┴───┴───┴───┴───
+        //    -28  -27 -26 -25 -24  ...  -6   -5  -4   -3  -2  -1   0    (음수 인덱스/경계)
+        result = result.slice(0, -2);
+        q1.innerText = result;
+      }
+    </script>
+  </body>
+</html>

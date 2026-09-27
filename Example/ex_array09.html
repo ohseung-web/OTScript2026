@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>배열연습문제 08</title>
+  </head>
+  <body>
+    <div class="question">
+      <label>2번 숫자 배열 입력 (예: 12,7,5,20,33,18)</label>
+      <input type="text" id="numberInput" />
+      <button onclick="evenPrint()">결과 확인</button>
+      <p id="q2"></p>
+    </div>
+    <script>
+      let numberInput = document.getElementById('numberInput');
+      let q1 = document.getElementById('q2');
+
+      function evenPrint() {
+        let number = numberInput.value;
+        let numbers = number.split(',');
+        console.log('numbers :' + numbers);
+        let even = '';
+        let odd = '';
+
+        for (let i = 0; i < numbers.length; i++) {
+          if (numbers[i] % 2 == 0) even += numbers[i] + ', ';
+          else odd += numbers[i] + ', ';
+
+          console.log(
+            `${i + 1}번째 점수: ${numbers[i]}점 -> 짝수: ${even} / 홀수 : ${odd}`,
+          );
+        }
+        // numbers.forEach((numberItem, i) => {
+        //   if (numberItem % 2 == 0) even += numberItem + ', ';
+        //   else odd += numberItem + ', ';
+
+        //   console.log(
+        //     `${i + 1}번째 점수: ${numberItem}점 -> 짝수: ${even} / 홀수 : ${odd}`,
+        //   );
+        // });
+
+        even = even.slice(0, -2);
+        odd = odd.slice(0, -2);
+        q2.innerText = `짝수 : ${even} / 홀수 : ${odd}`;
+      }
+    </script>
+  </body>
+</html>

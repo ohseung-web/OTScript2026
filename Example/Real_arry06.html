@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>장바구니 수량 조절</title>
+    <style>
+      body { font-family: '맑은 고딕', sans-serif; }
+      .row { margin: 12px 0; }
+      .sold-out { font-weight: bold; color: red; }
+      .subtotal { color: #333; }
+      .total { font-weight: bold; color: green; margin-top: 14px; }
+      .row button { margin-left: 6px; width: 28px; }
+    </style>
+  </head>
+  <body>
+    <h2>장바구니</h2>
+    <div id="output7"></div>
+
+    <script>
+      // 이름, 단가, 수량(초기값 1)을 저장하는 배열을 각각 만든다
+      let names = ['티셔츠', '양말', '모자'];
+      let prices = [15000, 3000, 12000];
+      let quantities = [1, 1, 1];
+
+      function increase(i) {
+        quantities[i]++;
+        render();
+      }
+
+      function decrease(i) {
+        if (quantities[i] > 0) {
+          quantities[i]--;
+        }
+        render();
+      }
+
+      function render() {
+        let result = '';
+        let total = 0;
+
+        for (let i = 0; i < names.length; i++) {
+          let subtotal = prices[i] * quantities[i];
+          total += subtotal;
+
+          // 수량이 0이면 '품절' 문구, 아니면 소계 출력
+          let line = (quantities[i] === 0)
+            ? "<span class='sold-out'>품절</span>"
+            : "<span class='subtotal'>" + subtotal.toLocaleString() + '원</span>';
+
+          result +=
+            "<div class='row'>" +
+            names[i] + ' (' + prices[i].toLocaleString() + '원) x ' + quantities[i] +
+            ' &nbsp; ' + line +
+            " <button onclick='decrease(" + i + ")'>-</button>" +
+            " <button onclick='increase(" + i + ")'>+</button>" +
+            '</div>';
+        }
+
+        result += "<div class='total'>총 합계 : " + total.toLocaleString() + '원</div>';
+        document.getElementById('output7').innerHTML = result;
+      }
+
+      render();
+    </script>
+  </body>
+</html>

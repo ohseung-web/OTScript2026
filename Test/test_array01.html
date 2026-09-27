@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>배열</title>
+  </head>
+  <body>
+    <script>
+      // 가장일반적 방법 리터럴
+      const arr = [10, 20, 30];
+
+      // 고전적 for문 이용
+      for (let i = 0; i < arr.length; i++) {
+        console.log(`arr 배열 출력 : ${arr[i]}`);
+      }
+      // Array.prototype.forEach
+      // - 배열의 각 요소마다 콜백 함수를 실행합니다.
+      // - 첫 번째 매개변수(element)는 배열의 값, 두 번째 매개변수(index)는 요소의 인덱스입니다.
+
+      // 콜백 함수(Callback Function)는 "다른 함수에게 인자(파라미터)로 전달되어서,
+      // 나중에 호출(Call back)되는 함수"를 말합니다.
+
+      // 아래 코드에서 콜백 함수는 바로 화살표 함수 부분인
+      // (item, index) => { console.log(...); } 전체입니다.
+      arr.forEach((item, index) => {
+        console.log(`forEach : ${item}-${[index]}`);
+      });
+
+      // 3. for...in 문 사용
+      // - 객체나 배열의 '속성 이름(배열에서는 인덱스)'을 순회합니다.
+      // - 변수 i에는 요소의 값(10, 20, 30)이 아닌
+      //   '인덱스 문자열("0", "1", "2")'이 할당됩니다.
+      //       배열을 순회할 때 for...in은 사용을 권장하지 않습니다.
+
+      // for...in은 객체의 프로퍼티(Key)를 순회하기 위한 구문입니다.
+      // 배열에 사용할 경우 인덱스가 숫자 타입이 아닌 문자열 타입("0", "1")으로 전달되며,
+      // 임의의 순서로 순회될 위험이나 커스텀 프로퍼티까지 출력될 가능성이 있습니다.
+      for (const i in arr) {
+        console.log(`for~in : ${arr[i]}`);
+      }
+
+      // Array 생성자 이용
+      const arr02 = Array(50, 60, 70);
+      arr02.forEach((item02, i) => {
+        console.log(`arr02 출력 : ${item02}`);
+      });
+      // new Array(3)으로 생성한 배열은 길이가 3이지만 내부 요소가 비어 있는
+      // 희소 배열(Sparse Array)이 됩니다. 이때 생성된 요소는 undefined라는
+      // 값조차 할당되지 않은 '빈 슬롯(Empty Slot)' 상태입니다.
+
+      // forEach를 비롯한 map, filter 등의 자바스크립트 배열 고차 메서드들은 초기화되지
+      // 않은 빈 슬롯을 건너뛰고 순회하도록 설계되어 있습니다.
+      // 따라서 콜백 함수가 단 한 번도 실행되지 않아 콘솔에 아무것도 출력되지 않는 것입니다.
+      const arr03 = new Array(3);
+      arr03.forEach((item03, i) => {
+        console.log(`arr03 출력 : ${item03}`);
+      });
+
+      // 매개변수 item04는 배열의 원본이 아닌 '복사본'입니다
+      // forEach의 콜백 함수에 전달되는 item04는 배열 arr04
+      // 안의 값(숫자 0)을 복사해 온 지역 변수입니다.
+      const arr04 = new Array(3).fill(0);
+      arr04.forEach((item04, i) => {
+        console.log(`arr04 출력 : ${item04 + i + 1}`);
+      });
+
+      const arr05 = new Array('apple', 'banana', 'chery', 40);
+      arr05.forEach((item05, i) => {
+        console.log(`arr05 출력 : ${item05}`);
+      });
+    </script>
+  </body>
+</html>

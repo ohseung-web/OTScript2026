@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>데이터 타입</title>
+  </head>
+  <body>
+    <script>
+      // 중복선언 가능, 마지막에 할당된 값이 최종 저장
+      var title = 'book';
+      console.log(title);
+
+      var title = 'movie';
+      console.log(title);
+
+      title = 'music';
+      console.log(title);
+
+      // let
+      let title_01 = 'book';
+      console.log(title_01);
+
+      // let title_01 = 'movie';
+      // 'title_01'이라는 식별자(변수명)가 이미 선언되었습니다.
+      // 중복선언 불가, 재할당 가능
+      title_01 = 'music';
+      console.log(title_01);
+
+      // const는 immutable(재할당)도 불가능 하다.
+      const title_03 = 'book03';
+      console.log(title_03);
+      // const title_03 = 'movie03';
+      // console.log(title_03);
+      // title_03 = 'music';
+      // console.log(title_03);
+      // test_variable.html:35 Uncaught TypeError: Assignment to constant variable.
+
+      var x = 5,
+        y = 3;
+      var big = x > y ? x : y;
+      // (x>y)가 true이므로 x 값 5가 big에 대입된다.
+      console.log(big);
+
+      let user = null; // "user 변수는 현재 비어있다"고 명시함 (정상)
+      let user01 = NULL;
+      // ❌ Uncaught ReferenceError: NULL is not defined
+      // (자바스크립트는 NULL이 뭔지 모르기 때문에 에러를 냅니다)
+
+      let Null = '안녕';
+      // ⭕ 대문자 Null을 변수 이름으로 쓰는 건 문법적으로 가능하지만,
+      // '값이 없음'의 의미로 작동하는 것은 아닙니다.
+
+      // 배열
+      let ranking = ['Jason', 'Alice', 'Candy', 'Chris', 'Tom'];
+
+      // === 이미지 1: 배열 메서드 (pop, push, shift, unshift, splice, slice) ===
+      // === 이미지 1: 배열 메서드 ===
+      let example = ['a', 'b', 'c'];
+
+      // 맨 뒤 요소 제거
+      example.pop();
+      console.log(example); // ['a', 'b']
+
+      // 맨 뒤에 요소 추가
+      example.push('d');
+      console.log(example); // ['a', 'b', 'd']
+
+      // 맨 앞 요소 제거
+      example.shift();
+      console.log(example); // ['b', 'd']
+
+      // 맨 앞에 요소 추가
+      example.unshift('k');
+      console.log(example); // ['k', 'b', 'd']
+
+      // 인덱스 1부터 2개 요소 제거
+      example.splice(1, 2);
+      console.log(example); // ['k']
+
+      // 인덱스 0부터 1 전까지 잘라내기
+      example.slice(0, 1);
+      console.log(example); // ['k']
+
+      // === 이미지 2: 배열 메서드 ===
+      let arry1 = ['국어', '수학', '영어'];
+      let arry2 = [85, 90, 75];
+
+      // 두 배열 합치기
+      let arry3 = arry1.concat(arry2);
+      console.log(arry3); // ['국어', '수학', '영어', 85, 90, 75]
+
+      // 요소 위치 찾기
+      arry1.indexOf('수학');
+      console.log(arry1); // ['국어', '수학', '영어']
+
+      // 요소 위치 찾은 값을 변수에 저장
+      let arry4 = arry1.indexOf('수학');
+      console.log(arry4); // 1
+
+      // 배열 순서 뒤집기
+      let arry5 = arry1.reverse();
+      console.log(arry5); // ['영어', '수학', '국어']
+
+      // 배열 가나다순 정렬
+      let arry6 = arry1.sort();
+      console.log(arry6); // ['국어', '수학', '영어']
+
+      // typeof 연산자(자료형 확인)
+      console.log(typeof arry1);
+
+      // object -----------------------
+      // ==========================================
+      // 1. 객체 기본 구조 및 메소드 정의 (이미지 1 수정본)
+      // ==========================================
+      const kim = {
+        firstname: 'john',
+        lastname: 'kim',
+        age: 35,
+        address: 'seoul',
+        // 메소드는 아래와 같이 함수(function) 형태로 작성합니다.
+        list: function () {
+          console.log(`${this.firstname} ${this.lastname}의 정보입니다.`);
+        },
+      };
+
+      // 메소드 실행 테스트
+      kim.list(); // "john kim의 정보입니다."
+
+      // ==========================================
+      // 2. 객체 접근법 및 변수 활용 (이미지 2 수정본)
+      // ==========================================
+      let jasonData = {
+        name: 'jason',
+        age: 25, // 이미지 2의 오타(225)를 정상적인 연령 값(25)으로 적용
+        gender: 'Male',
+      };
+
+      console.log(jasonData); // {name: 'jason', age: 25, gender: 'Male'}
+
+      // (1) 점 표기법
+      console.log(jasonData.name); // "jason"
+
+      // (2) 대괄호 표기법 (문자열 Key 사용)
+      console.log(jasonData['name']); // "jason"
+
+      // (3) 대괄호 표기법 (선언되지 않은 변수 사용 시 undefined)
+      let name; // 변수선언만 된 상태
+      console.log(jasonData[name]); // undefined
+
+      // (4) 대괄호 표기법 (변수에 프로퍼티 이름이 담긴 경우)
+      name = 'age';
+      console.log(jasonData[name]); // 25 (jasonData["age"]와 동일)
+
+      // ==========================================
+      // 3. 객체에 프로퍼티 동적 추가 (이미지 3 수정본)
+      // ==========================================
+      // 이미 존재하는 jasonData 객체에 새로운 배열 프로퍼티 추가
+      jasonData.favoriteFood = ['rice', 'noodle', 'chicken'];
+
+      console.log(jasonData);
+      /*
+        출력 결과:
+        {
+          name: 'jason', 
+          age: 25, 
+          gender: 'Male', 
+          favoriteFood: ['rice', 'noodle', 'chicken']
+        }
+        */
+    </script>
+  </body>
+</html>

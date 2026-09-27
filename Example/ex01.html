@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연습문제</title>
+  </head>
+  <body>
+    <button onclick="problem1()">문제 1: 변수와 상수 출력</button>
+    <p id="p1"></p>
+
+    <script>
+      function problem1() {
+        let name = '홍길동';
+        const age = 20;
+        document.getElementById('p1').innerText = `이름:${name}, 나이:${age}`;
+        // 백틱 대신 작은따옴표(')와 + 연산자 사용
+        document.getElementById('p1').innerText =
+          '이름:' + name + ', 나이:' + age;
+      }
+
+      function problem2() {
+        let num1 = 10;
+        let num2 = 5;
+        let sum = num1 + num2;
+        document.getElementById('p2').innerText = `합계: ${sum}`;
+      }
+
+      function problem3() {
+        let str1 = 'Hello ';
+        let str2 = 'World';
+        document.getElementById('p3').innerText = str1 + str2;
+      }
+
+      function problem4() {
+        let score = 80;
+        if (score >= 60) {
+          document.getElementById('p4').innerText = '합격입니다.';
+        } else {
+          document.getElementById('p4').innerText = '불합격입니다.';
+        }
+      }
+
+      function showVariable() {
+        let num = document.getElementById('numInput').value;
+        document.getElementById('output1').innerText = `변수 num의 값: ${num}`;
+      }
+
+      function showConstant() {
+        const PI = 3.14;
+        document.getElementById('output2').innerText = `상수 PI 값: ${PI}`;
+      }
+
+      function calc() {
+        let a = Number(document.getElementById('a').value);
+        let b = Number(document.getElementById('b').value);
+
+        let add = a + b;
+        let sub = a - b;
+        let mul = a * b;
+        let div = a / b;
+
+        document.getElementById('output3').innerText =
+          `합: ${add}, 차: ${sub}, 곱: ${mul}, 몫: ${div}`;
+      }
+
+      function concatStr() {
+        let str1 = document.getElementById('str1').value;
+        let str2 = document.getElementById('str2').value;
+        document.getElementById('output4').innerText = str1 + str2;
+      }
+
+      function comparison() {
+        let n1 = Number(document.getElementById('num1').value);
+        let n2 = Number(document.getElementById('num2').value);
+
+        let isGreater = n1 > n2;
+        let isEqual = n1 == n2;
+
+        document.getElementById('output5').innerText =
+          `n1 > n2: ${isGreater}, n1 == n2: ${isEqual}`;
+      }
+
+      function checkGrade() {
+        let score = Number(document.getElementById('score').value);
+        let grade = '';
+
+        if (score >= 90) {
+          grade = 'A';
+        } else if (score >= 80) {
+          grade = 'B';
+        } else if (score >= 70) {
+          grade = 'C';
+        } else {
+          grade = 'F';
+        }
+
+        document.getElementById('output6').innerText = `등급: ${grade}`;
+      }
+    </script>
+  </body>
+</html>

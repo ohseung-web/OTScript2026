@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2차원 배열</title>
+  </head>
+  <body>
+    <script>
+      // forEach 이용 배열 순회
+      const arr02 = [10, 20, 30];
+      arr02.forEach((value, index, array) => {
+        console.log(`${index} : ${value}`); // 0 : 10, 1 : 20, 2: 30 출력
+        console.log(`${array}`);
+      });
+
+      let arr09 = ['apple', 'banana', 'cherry'];
+
+      // 콜백함수 : () => {}
+      arr09.forEach((value, index, array) => {
+        console.log('value:', value); // 현재 요소
+        console.log('index:', index); // 현재 인덱스
+        console.log('array:', array); // 원본 배열
+        console.log('---');
+      });
+
+      // map()이용 배열순회
+      let arr = [1, 2, 3];
+      let doubled = arr.map((value, index, array) => {
+        console.log(value);
+        return value * 10; // 새로운 배열 반환
+      });
+
+      console.log(doubled);
+
+      let arr10 = ['apple', 'banana', 'cherry'];
+      let indices = arr10.map((_, index) => {
+        console.log('index:', index); // index 출력
+        return index; // map은 새 배열 반환
+      });
+
+      console.log('indices array:', indices);
+    </script>
+  </body>
+</html>

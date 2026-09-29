@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>달력만들기</title>
+    <style>
+      /* 기본 스타일 리셋 */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* 달력 컨테이너 카드리셋 */
+      #container {
+        width: 420px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+      }
+
+      /* 년/월 상단 헤더 영역 */
+      #date-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      #main_date {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1d20;
+      }
+
+      /* 이전/다음 버튼 스타일 */
+      #previousButton,
+      #nextButton {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: #495057;
+        transition: all 0.2s ease;
+      }
+
+      #previousButton:hover,
+      #nextButton:hover {
+        background-color: #e9ecef;
+        color: #212529;
+      }
+
+      /* 요일(SUN~SAT) 및 날짜 테이블 공통 */
+      #date-week,
+      .cal_table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      /* 요일 헤더 */
+      #date-week th {
+        padding: 10px 0;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #868e96;
+        text-align: center;
+      }
+
+      /* 일요일/토요일 색상 설정 */
+      #date-week th:first-child,
+      .cal_table td:first-child {
+        color: #e03131; /* 일요일 빨간색 */
+      }
+
+      #date-week th:last-child,
+      .cal_table td:last-child {
+        color: #1971c2; /* 토요일 파란색 */
+      }
+
+      /* 날짜 셀 스타일 */
+      .cal_table td {
+        height: 48px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #343a40;
+        border-radius: 8px;
+        transition: background-color 0.15s ease;
+      }
+
+      /* 날짜가 존재하는 셀에 호버 효과 */
+      .cal_table td:not(:empty) {
+        cursor: pointer;
+      }
+
+      .cal_table td:not(:empty):hover {
+        background-color: #f1f3f5;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 달력 HTML 구조 -->
+    <div id="container">
+      <div id="date-wrap">
+        <!-- 이전 > -->
+        <button id="previousButton" onclick="previousButton()">&lt;</button>
+        <!-- 2025년 9월 -->
+        <div id="main_date"></div>
+        <!-- 이후 < -->
+        <button id="nextButton" onclick="nextButton()">&gt;</button>
+      </div>
+      <table id="date-week">
+        <thead>
+          <th>SUN</th>
+          <th>MON</th>
+          <th>TUE</th>
+          <th>WED</th>
+          <th>THU</th>
+          <th>FRI</th>
+          <th>SAT</th>
+        </thead>
+      </table>
+      <!-- 달력 날짜 값 입력 -->
+      <div id="displayTable"></div>
+    </div>
+
+    <!-- script  -->
+    <script>
+      //  document 변수 만들기
+      // 전역변수 : 전지역에서 사용할 수 있는 변수
+      let yearMonth = document.getElementById('main_date');
+      let displayTable = document.getElementById('displayTable');
+      let today = new Date(); //오늘낢짜/시간
+
+      // 2차원배열 지정
+      let arr = Array.from(Array(6), () => new Array(7));
+
+      // 달력의 배열에 값을 저장하는 함수
+      function calendar() {
+        // 1. 올해년도 출력하는 변수
+        let year = today.getFullYear(); //2025
+
+        // 2. 오늘날짜의 월을 출력하는 변수
+        let month = today.getMonth(); // 8 => 8+1=9
+
+        // 3. 이달의 마지막 일자 구하기
+        //    일의 0을 지정하면 그전달의 마지막일자를 출력한다.
+        //  new Date(2025,5,0) => 2025-4-30
+        let lastDate = new Date(year, month + 1, 0);
+
+        // 마지막 일자 출력하는 변수
+        let lastDay = lastDate.getDate();
+
+        // 4. 이달의 시작일인 1의 요일을 구하기
+        //    getDay() : 0(일) ~ 6(토)
+        //    1월:0 ~ 12월:11
+        let startDate = new Date(year, month, 1);
+
+        // 당해년도 월의 시작일자 1
+        let startDay = startDate.getDate();
+
+        // 당해년도 월의 시작일자의 요일
+        let startWeek = startDate.getDay();
+
+        // 가로 시작
+        let row = 0;
+
+        // 배열초기화
+        // 배열초기화 안하면 undefiend가 출력되기때문에
+        // 반드시 초기화 한다.
+        for (let i = 0; i < arr.length; i++) {
+          for (let j = 0; j < arr[i].length; j++) {
+            arr[i][j] = '';
+          }
+        }
+
+        // 핵심코드
+        // 달력배열에 실제 날짜를 채우는 핵심 로직
+        // i=시작일1, i<=마지막일자 30까지 루프 돌려
+        for (let i = startDay; i <= lastDay; i++) {
+          // 현재 달의 1일부터 마지막 날까지 반복
+          // day=0, startweek=1 => arr[0][1] = 1
+          arr[row][startWeek] = i;
+
+          // 7일이되면 줄바꿈 코드
+          // startWeek : 7 < 6
+          if (startWeek < arr[row].length - 1) {
+            // 만약에 현재요일이 6(토요일)이 아니면
+            startWeek++;
+          } else {
+            // 현재 요일이 토요일이면 한 주가 끝난 것
+            // 다음행으로 이동
+            row++;
+            // startWeek를 0으로 리셋
+            startWeek = 0;
+          }
+        }
+      }
+      // display() 호출 하여 화면 출력
+      // display();
+      // display 출력하는 함수
+      function display() {
+        // 반드시 해야하는 작업
+        calendar(); //달력 호출
+
+        let tb = "<table class='cal_table'>";
+        // 가로줄
+        for (let i = 0; i < arr.length; i++) {
+          tb += '<tr>';
+          // 세로줄
+          for (let j = 0; j < arr[i].length; j++) {
+            tb += '<td>' + arr[i][j] + '</td>';
+          }
+          tb += '</tr>';
+        }
+        tb += '</table>';
+
+        // 상단의 년월을 입력
+        // yearMonth
+        let yearmon =
+          today.getFullYear() + '년' + (today.getMonth() + 1) + '월';
+        yearMonth.innerHTML = yearmon;
+        // 배열의 달력
+        displayTable.innerHTML = tb;
+      }
+
+      display(); // 함수 호출
+
+      // 이전 버튼 클릭시 날짜의 월이 -1씩 줄어들면 된다.
+      function previousButton() {
+        today = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        display();
+      }
+      // 이후 버튼 클릭시 날자의 월이 +1씩 증가되면 된다.
+      function nextButton() {
+        today = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        display();
+      }
+    </script>
+  </body>
+</html>

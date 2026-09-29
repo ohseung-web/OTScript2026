@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>코어객체</title>
+  </head>
+  <body>
+    <script>
+      // 4. New Date( year, month[, day, hour, minute, second, millisecond] )
+
+      // 월을 나타내는 8은 9월을 의미한다.
+      // (※ 자바스크립트의 월(month)은 0부터 시작: 0=1월, 8=9월)
+      // 2023/9/1/00:00:00
+      let date = new Date(2023, 8);
+      console.log(date);
+      // 출력: Fri Sep 01 2023 00:00:00 GMT+0900 (한국 표준시)
+
+      // 월을 나타내는 8은 9월을 의미한다.
+      // 2023/9/8/15:04:00:00
+      date = new Date(2023, 8, 8, 15, 4, 0, 0);
+      console.log(date);
+      // 출력: Fri Sep 08 2023 15:04:00 GMT+0900 (한국 표준시)
+
+      // 가독성이 훨씬 좋다.
+      date = new Date('2023/9/08/15:04:00');
+      console.log(date);
+      // 출력: Fri Sep 08 2023 15:04:00 GMT+0900 (한국 표준시)
+
+      // 5. Date 생성자를 new 연산자 없이 호출
+      // Date 생성자 함수를 new 연산자없이 호출하면
+      // 인스턴스를 반환하지 않고 결과값을 문자열로 반환한다.
+      let today = Date();
+      console.log(typeof today, today);
+      // 출력: string Fri Sep 08 2023 15:11:54 GMT+0900 (한국 표준시)
+
+      // 1. Date.now()
+      // 1970년 1월 1일 00:00:00(UTC)을 기점으로 현재 시간까지 
+      // 경과한 밀리초를 숫자로 반환한다.
+
+      let now = Date.now();
+      console.log(now / 86400000 / 365);
+      // now => 1,694,153,925,531
+      // 19608.264520671295 일 // 55년 => 1970+55 : 2025년
+
+      // 2. Date.parse()
+      // 1970년 1월 1일 00:00:00(UTC)을 기점으로 인수로 전달된
+      // 지정 시간(new Date(dateString)의 인수와 동일한 형식)까지의 밀리초를 숫자로 반환한다.
+
+      let d = Date.parse('Jan 2, 1970 00:00:00 UTC'); // UTC
+      console.log(d); // 86400000
+
+      d = Date.parse('Jan 2, 1970 09:00:00'); // KST
+      console.log(d); // 86400000
+
+      d = Date.parse('1970/01/02/09:00:00'); // KST
+      console.log(d); // 86400000
+    </script>
+  </body>
+</html>

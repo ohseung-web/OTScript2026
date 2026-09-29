@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>코어객체</title>
+  </head>
+  <body>
+    <script>
+      // 자바스크립트 내장객체이다.
+      // 코어 객체 (Core / Built-in Objects)
+      // DOM 객체 (Document Object Model) : 웹 페이지(HTML 문서)의 요소들을 제어하기 위한 객체
+      //          document, getElementById(), querySelector()
+      // BOM 객체 (Browser Object Model) : 웹 브라우저 전체를 제어하기 위한 객체
+      //      window, location, navigator, history, screen
+      //Object 객체 생성하기
+      // 자바스크립트 객체의 최상위 기본 객체 (new Object()로 객체 생성)
+      let obj = new Object();
+      obj.name = '길동';
+      console.log(obj.name);
+
+      //배열
+      let arry = [1, 2, 3];
+      console.log(arry.length);
+
+      // String  문자열 처리
+      // 문자열을 다루는 객체 (str.toUpperCase()로 대문자 변환)
+      let str = 'hello JS!';
+      console.log(str.toUpperCase());
+
+      // Math 수학함수
+      // 수학적 연산 및 함수를 제공하는 객체 (Math.random()으로 난수 생성)
+      console.log(Math.random());
+
+      // 1) Date 객체는 날짜와 시간(년, 월, 일, 시, 분, 초,
+      //    밀리초(천분의 1초(millisecond, ms)))을 위한 메소드를 제공하는 빌트인 객체이면서
+      //    생성자 함수이다.
+      //  2) Date 생성자 함수로 생성한 Date 객체는 내부적으로 숫자 값을 갖는다. 이 값은
+      //     1970년 1월 1일 00:00(UTC)을 기점으로 현재 시간까지의 밀리초를 나타낸다.
+      //  3) KST(Korea Standard Time)는 UTC/GMT에 9시간을 더한 시간이다. 즉, KST는 UTC/ //
+      //     GMT보다 9시간이 빠르다. 예를 들어, UTC 00:00 AM은 KST 09:00 AM이다.
+      //  4) 현재의 날짜와 시간은 자바스크립트 코드가 동작한 시스템의 시계에 의해 결정된다.
+      const today = new Date();
+      console.log(`오늘날짜 : ${today}`); //오늘날짜 : Wed Sep 30 2026 02:32:38 GMT+0900 (한국 표준시)
+      const date = new Date(86400000);
+      console.log(date); //Fri Jan 02 1970 09:00:00 GMT+0900 (한국 표준시)
+      // 1. 86,400,000 밀리초는 정확히 '하루(24시간)'입니다.
+      // 2. 자바스크립트의 기준 시점(Unix Epoch)은 1970년 1월 1일 00:00:00 UTC입니다.
+
+      // new Date()의 괄호 안에 날짜 형태의 문자열(String)을 전달해서 원하는 날짜와 시간을
+      // 가진 Date 객체를 생성할 수 있다.
+      // 이를 보통 날짜 문자열 파싱(Date String Parsing)이라고 부른다.
+
+      // 1. 영문 월 이름 방식
+      let date1 = new Date('September 08, 2023 14:50:00');
+      console.log(date1); // Fri Sep 08 2023 14:50:00 GMT+0900 (한국 표준시)
+
+      // 2. 슬래시(/) 구분자 방식
+      let date2 = new Date('2023/09/08 14:50:00');
+      console.log(date2);
+
+      // 3. 하이픈(-) 및 ISO 표준 방식 (가장 권장됨)
+      let date3 = new Date('2023-09-08T14:50:00');
+      let date4 = new Date('2023-09-08 14:50:00');
+      console.log(date4);
+    </script>
+  </body>
+</html>

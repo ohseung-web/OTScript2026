@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>코어객체</title>
+  </head>
+  <body>
+    <script>
+      // 22. Date.prototype.toDateString
+      // 사람이 읽을 수 있는 형식의 문자열로 날짜를 반환한다.
+      const d = new Date('2023/9/08/18:30');
+
+      console.log(d.toString()); // Fri Sep 08 2023 18:30:00 GMT+0900 (한국 표준시)
+      console.log(d.toDateString()); // Fri Sep 08 2023
+
+      // 24. Date.prototype.toLocaleDateString
+      // 생성된 Date 객체에서 날짜 부분을 현재 지역 표기법으로 변환하여 가져옵니다.
+      // toLocaleDateString() 메서드는 locales(로케일 - 언어와 국가)과
+      // options(옵션)을 파라미터(Parameter) 전달받아 현재 지역 표기법으로 변환합니다.
+      const today = new Date();
+      console.log(today.toLocaleDateString()); // 예: 2023. 9. 8. (이미지 예시: Fri Sep 08 2023)
+
+      // 25. Date.prototype.toLocaleTimeString
+      // 생성된 Date 객체에서 시간 부분을 현재 지역 표기법으로 변환하여 가져옵니다.
+      const today01 = new Date();
+      console.log(today01.toLocaleTimeString()); // 오전 3:45:41
+
+      // 26. setTimeout()
+      // 어떤 코드를 바로 실행하지 않고 일정 시간 기다린 후 실행해야하는 경우가 있다.
+      // 이럴 때는 setTimeout() 함수를 사용할 수 있다.
+      // setTimeout() 함수는 첫번째 인자로 실행할 코드를 담고 있는 함수를 받고,
+      // 두번째 인자로 지연 시간을 밀리초(ms) 단위로 받는다.
+
+      // 1 밀리초 = 0.001 초,  10 밀리초 = 0.01 초,  2500 밀리초 = 2.5 초
+      setTimeout(() => console.log('2초 후에 실행됨'), 2000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>장바구니</title>
+    <style>
+      /* 전체 레이아웃 및 폰트 */
+      body {
+        font-family: 'Pretendard', 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+        margin: 0;
+      }
+
+      .cart-container {
+        width: 100%;
+        max-width: 750px;
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      h2 {
+        margin-top: 0;
+        color: #1a202c;
+        font-size: 22px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 12px;
+      }
+
+      /* 테이블 스타일링 */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+
+      th {
+        background-color: #3182ce;
+        color: #ffffff;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #edf2f7;
+        text-align: center;
+        color: #4a5568;
+        font-size: 14px;
+      }
+
+      tr:hover {
+        background-color: #f7fafc;
+      }
+
+      /* 조작 버튼 디자인 */
+      .btn {
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0 2px;
+        transition: background 0.2s ease;
+      }
+
+      .btn-increase {
+        background-color: #38a169;
+      }
+      .btn-increase:hover {
+        background-color: #2f855a;
+      }
+
+      .btn-decrease {
+        background-color: #dd6b20;
+      }
+      .btn-decrease:hover {
+        background-color: #c05621;
+      }
+
+      .btn-delete {
+        background-color: #e53e3e;
+      }
+      .btn-delete:hover {
+        background-color: #c53030;
+      }
+
+      /* 총 금액 영역 */
+      #total {
+        text-align: right;
+        font-size: 18px;
+        font-weight: bold;
+        color: #2b6cb0;
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 2px solid #e2e8f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cart-container">
+      <h2>장바구니</h2>
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>수량</th>
+            <th>합계</th>
+            <th>조작</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+      </table>
+      <div id="total">총 금액 : 0원</div>
+    </div>
+
+    <script>
+      // 초기 장바구니 데이터
+      let cartList = [
+        { id: 1, name: '노트북', price: 1200000, quantity: 1 },
+        { id: 2, name: '마우스', price: 20000, quantity: 2 },
+        { id: 3, name: '키보드', price: 50000, quantity: 1 },
+      ];
+
+      // 조건 ⑦ : function renderCart() {} 구현
+      function renderCart() {
+        const cartBody = document.querySelector('#cartBody');
+        const totalDiv = document.querySelector('#total');
+
+        let totalSum = 0;
+
+        // map()을 사용하여 테이블 행(tr) 생성을 처리하고 join('')으로 결합
+        cartBody.innerHTML = cartList
+          .map((item) => {
+            const itemTotal = item.price * item.quantity;
+            totalSum += itemTotal;
+
+            return `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.price.toLocaleString()}원</td>
+            <td>${item.quantity}</td>
+            <td>${itemTotal.toLocaleString()}원</td>
+            <td>
+              <button class="btn btn-increase" onclick="changeQuantity(${item.id}, 1)">+</button>
+              <button class="btn btn-decrease" onclick="changeQuantity(${item.id}, -1)">-</button>
+              <button class="btn btn-delete" onclick="deleteItem(${item.id})">x</button>
+            </td>
+          </tr>
+        `;
+          })
+          .join('');
+
+        // 총 금액 업데이트
+        totalDiv.textContent = `총 금액 : ${totalSum.toLocaleString()}원`;
+      }
+
+      // 조건 ②, ③, ⑤, ⑥ : 수량 조작 함수
+      function changeQuantity(id, amount) {
+        const targetItem = cartList.find((item) => item.id === id);
+        if (!targetItem) return;
+
+        const newQuantity = targetItem.quantity + amount;
+
+        // 조건 ⑤ : 수량 10개 이상 제한
+        if (newQuantity > 10) {
+          alert('더 이상 증가 불가능');
+          return;
+        }
+
+        // 조건 ⑥ : 수량 최소 1개 유지 제한
+        if (newQuantity < 1) {
+          alert('수량은 최소 1개 이상이어야 합니다.');
+          return;
+        }
+
+        targetItem.quantity = newQuantity;
+        renderCart();
+      }
+
+      // 조건 ④ : 상품 삭제 함수
+      function deleteItem(id) {
+        cartList = cartList.filter((item) => item.id !== id);
+        renderCart();
+      }
+
+      // 최초 실행
+      renderCart();
+    </script>
+  </body>
+</html>

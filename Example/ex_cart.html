@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>장바구니</title>
+    <style>
+      /* 전체 레이아웃 및 폰트 */
+      body {
+        font-family: 'Pretendard', 'Segoe UI', sans-serif;
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        margin: 0;
+      }
+
+      .cart-container {
+        width: 100%;
+        max-width: 750px;
+        background: #ffffff;
+        padding: 28px;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        margin-top: 0;
+        color: #212529;
+        font-size: 22px;
+        border-bottom: 2px solid #212529;
+        padding-bottom: 12px;
+      }
+
+      /* 테이블 스타일링 */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+
+      th {
+        background-color: #495057;
+        color: #ffffff;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+        text-align: center;
+        color: #343a40;
+        font-size: 14px;
+      }
+
+      tr:hover {
+        background-color: #f1f3f5;
+      }
+
+      /* 회색 계열 버튼 모노톤 스타일링 */
+      .btn {
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        color: #495057;
+        padding: 4px 10px;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0 2px;
+        transition: all 0.2s ease;
+      }
+
+      /* 버튼 호버 및 삭제 버튼 강조 */
+      .btn:hover {
+        background-color: #e9ecef;
+        color: #212529;
+        border-color: #adb5bd;
+      }
+
+      .btn-delete {
+        background-color: #e9ecef;
+        color: #495057;
+      }
+
+      .btn-delete:hover {
+        background-color: #343a40;
+        color: #ffffff;
+        border-color: #343a40;
+      }
+
+      /* 총 금액 영역 */
+      #total {
+        text-align: right;
+        font-size: 18px;
+        font-weight: bold;
+        color: #212529;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 2px solid #e9ecef;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cart-container">
+      <h2>장바구니</h2>
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>수량</th>
+            <th>합계</th>
+            <th>조작</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+      </table>
+      <div id="total">총 금액 : 0원</div>
+    </div>
+
+    <script>
+      // 초기 장바구니 데이터
+      let cartList = [
+        { id: 1, name: '노트북', price: 1200000, quantity: 1 },
+        { id: 2, name: '마우스', price: 20000, quantity: 2 },
+        { id: 3, name: '키보드', price: 50000, quantity: 1 },
+      ];
+
+      // 조건 ⑦ : 장바구니 화면 출력 함수
+      function renderCart() {
+        let cartBody = document.querySelector('#cartBody');
+        let totalDiv = document.querySelector('#total');
+
+        let htmlStr = '';
+        let totalSum = 0;
+
+        for (let i = 0; i < cartList.length; i++) {
+          let item = cartList[i];
+          let itemTotal = item.price * item.quantity;
+          totalSum += itemTotal;
+
+          // 버튼 클릭 시 각각의 증가/감소 함수를 호출하도록 연결
+          htmlStr += `
+                <tr>
+                  <td>${item.name}</td>
+                  <td>${item.price.toLocaleString()}원</td>
+                  <td>${item.quantity}</td>
+                  <td>${itemTotal.toLocaleString()}원</td>
+                  <td>
+                    <button class="btn" onclick="increaseQuantity(${item.id})">+</button>
+                    <button class="btn" onclick="decreaseQuantity(${item.id})">-</button>
+                    <button class="btn btn-delete" onclick="deleteItem(${item.id})">x</button>
+                  </td>
+                </tr>
+              `;
+        }
+
+        cartBody.innerHTML = htmlStr;
+        totalDiv.textContent = '총 금액 : ' + totalSum.toLocaleString() + '원';
+      }
+
+      // 1. 수량 증가 전용 함수 (+)
+      function increaseQuantity(id) {
+        for (let i = 0; i < cartList.length; i++) {
+          if (cartList[i].id === id) {
+            // 조건 ⑤ : 수량이 이미 10개 이상이면 더 이상 증가 불가능
+            if (cartList[i].quantity >= 10) {
+              alert('더 이상 증가 불가능');
+              return; // 함수 종료
+            }
+
+            // 수량 1 증가
+            cartList[i].quantity++;
+            break;
+          }
+        }
+
+        renderCart(); // 변경된 수량으로 화면 다시 그리기
+      }
+
+      // 2. 수량 감소 전용 함수 (-)
+      function decreaseQuantity(id) {
+        for (let i = 0; i < cartList.length; i++) {
+          if (cartList[i].id === id) {
+            // 조건 ⑥ : 수량이 1개 이하일 때 감사를 누르면 경고창
+            if (cartList[i].quantity <= 1) {
+              alert('수량은 최소 1개 이상이어야 합니다.');
+              return; // 함수 종료
+            }
+
+            // 수량 1 감소
+            cartList[i].quantity--;
+            break;
+          }
+        }
+
+        renderCart(); // 변경된 수량으로 화면 다시 그리기
+      }
+
+      // 3. 상품 삭제 함수 (x)
+      function deleteItem(id) {
+        for (let i = 0; i < cartList.length; i++) {
+          if (cartList[i].id === id) {
+            cartList.splice(i, 1); // 배열에서 해당 위치 요소 제거
+            break;
+          }
+        }
+
+        renderCart(); // 삭제된 데이터로 화면 다시 그리기
+      }
+
+      // 최초 화면 실행
+      renderCart();
+    </script>
+  </body>
+</html>

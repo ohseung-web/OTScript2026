@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연습문제</title>
+  </head>
+  <body>
+    <p id="output"></p>
+    <p id="output2"></p>
+    <script>
+      let student = { name: '홍길동', age: 25, major: '컴공' };
+      console.log('student:', student);
+
+      let car = {
+        brand: 'Hyundai',
+        color: '흰색',
+        price: 2500,
+      };
+      car.color = '검정색';
+      console.log('car:', car);
+
+      let item1 = { name: '노트북', price: 1000, quantity: 1 };
+      let item2 = { name: '마우스', price: 50, quantity: 2 };
+      let basket = [item1, item2];
+      let sum = 0;
+      for (let i = 0; i < basket.length; i++) {
+        sum += basket[i].price * basket[i].quantity;
+      }
+      console.log(`장바구니 총금액 : ${sum}`);
+
+      let output = document.getElementById('output');
+      let output2 = document.getElementById('output2');
+      let students = [
+        { name: '홍길동', kor: 90, eng: 80, math: 85 },
+        { name: '성춘향', kor: 95, eng: 88, math: 92 },
+        { name: '이몽룡', kor: 70, eng: 75, math: 80 },
+      ];
+
+      let avg = 0;
+      let result = '';
+      for (let i = 0; i < students.length; i++) {
+        avg =
+          (students[i].kor + students[i].eng + students[i].math) /
+          students.length;
+        result += `${students[i].name}의 평균 : ${avg.toFixed(2)}<br>`;
+      }
+      output.innerHTML = result;
+
+      // map()을 활용한 수정 코드
+      // stuResult 배열 형태:
+      // ["홍길동...", "성춘향...", "이몽룡..."]
+      // innerHTML에 대입하면서 자동 문자열 변환 (toString()):
+      // "홍길동...<br> , 성춘향...<br> , 이몽룡...<br>"
+      let stuResult = students.map((item, i) => {
+        let avg = (item.kor + item.eng + item.math) / 3;
+        return `${item.name}의 평균 : ${avg.toFixed(2)}<br>`;
+      }).join('');
+      output2.innerHTML = stuResult;
+    </script>
+  </body>
+</html>

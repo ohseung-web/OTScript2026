@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>object</title>
+  </head>
+  <body>
+    <h1>Book 객체</h1>
+    <hr />
+    <div id="bookprint"></div>
+
+    <script>
+      let book = {
+        title: 'JavaScript',
+        author: '홍길동',
+        page: 500,
+        price: 15000,
+        info: function () {
+          alert(`${this.title}의 분량은 ${this.page}쪽이다.`);
+        },
+      };
+      book.info();
+      // querySelector('#bookprint')는 HTML 문서(DOM) 안에서
+      // CSS 선택자(Selector) 조건을 만족하는 '첫 번째 엘리먼트(태그)'를
+      // 찾아서 자바스크립트 객체로 가져오는 메서드입니다.
+
+      // document: 브라우저가 현재 화면에 띄워둔 HTML 문서 전체를 가리키는 객체입니다.
+      // query: 정보나 데이터를 '질의(조회/검색)하다'라는 뜻입니다.
+      // Selector: CSS에서 스타일을 적용할 대상을 지정할 때 쓰는 '선택자'(예: #id, .class, tag)를 의미합니다.
+
+      let bookView = document.querySelector('#bookprint');
+      bookView.innerText = `${book.title}의 저자는 ${book.author}이고, 
+      책의 총 페이지 수는 ${book.page}page 이고, 금액은 ${book.price}이다.`;
+    </script>
+  </body>
+</html>

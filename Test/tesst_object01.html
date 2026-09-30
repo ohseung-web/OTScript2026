@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>object</title>
+  </head>
+  <body>
+    <script>
+      // 객체 리터럴 가장 많이 사용
+      // 객체 이름 = { key:value, key:value...}
+      // 객체 이름 = { property(속성):value, property(속성):value...}
+      let book = {
+        title: 'javaScript',
+        author: '홍길동',
+        page: 500,
+        price: 15000,
+      };
+      // 동작 원리: 템플릿 리터럴(백틱)이나 + 연산자는 객체를
+      // 하나의 글자(문자열)로 합치려고 시도합니다.
+      // 내부 과정: 객체를 문자열로 바꾸기 위해 자바스크립트는
+      // 내부적으로 book.toString() 메서드를 자동으로 호출한다.
+
+      // 쉼표(,) 사용: "독립된 인자로 전달"
+      // 동작 원리: console.log('book객체 :', book)에서
+      // 쉼표는 두 값을 합치는 게 아니라, 개발자 도구(콘솔)에
+      // 첫 번째 값과 두 번째 값을 각각 따로 전달하라는 뜻이다.
+      console.log(`book객체 : ${book.title}`);
+      console.log('book객체 :' + book);
+      console.log('book객체 :', book);
+
+      // 생성자 함수 사용
+      // 생성자 함수(Book01) 내부에서 this가 가리키는 것은
+      // new 키워드로 인해 새로 생성되는 객체 자신(인스턴스)이다.
+      // 결과적으로 함수 내부의 this는 myBook이라는 변수에 담기게
+      // 될 바로 그 객체를 가리킨다.
+      function Book01(title, author, page, price) {
+        this.title = title; // <- 여기서 this는 새로 생성되는 객체!
+        this.author = author;
+        this.page = page;
+        this.price = price;
+      }
+      // myBook.title = 'HTML';
+      // myBook.author = '개나리';
+      // myBook.page = 40;
+      // myBook.price = 15000;
+
+      let myBook = new Book01('HTML', '개나리', 40, 15000);
+      console.log(`book객체 : ${myBook}`); //출력 결과: book객체 : [object Object]
+      // 권장하는 출력 방식
+      console.log('book객체 :', myBook);
+    </script>
+  </body>
+</html>

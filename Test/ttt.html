@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let year = 2025;
+      let month = 4; // 5월 (인덱스는 0부터 시작하므로 4)
+
+      // nextMonth = 4 + 1 = 5 (6월을 의미)
+      // 6월의 0일 -> 6월 1일의 하루 전 -> 5월 31일!
+      // 즉 month+1 이렇게 해야 이번달의 마지막일자를 구할 수 있다.
+      let lastDate = new Date(year, month + 1, 0);
+
+      console.log(lastDate.getDate()); // 출력: 31
+      console.log(lastDate.toLocaleDateString()); // 출력: 2025. 5. 31.
+    </script>
+  </body>
+</html>

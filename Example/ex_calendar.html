@@ -164,6 +164,7 @@
         // 3. 이달의 마지막 일자 구하기
         //    일의 0을 지정하면 그전달의 마지막일자를 출력한다.
         //  new Date(2025,5,0) => 2025-4-30
+        // 그달(이번 달)'의 마지막 일자가 
         let lastDate = new Date(year, month + 1, 0);
 
         // 마지막 일자 출력하는 변수
@@ -214,6 +215,7 @@
           }
         }
       }
+
       // display() 호출 하여 화면 출력
       // display();
       // display 출력하는 함수
@@ -235,8 +237,7 @@
 
         // 상단의 년월을 입력
         // yearMonth
-        let yearmon =
-          today.getFullYear() + '년' + (today.getMonth() + 1) + '월';
+        let yearmon = today.getFullYear() + '년' + (today.getMonth() + 1) + '월';
         yearMonth.innerHTML = yearmon;
         // 배열의 달력
         displayTable.innerHTML = tb;

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>호버변경하기</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        font-size: 30px;
+      }
+      a {
+        text-decoration: none;
+        color: #222;
+        padding-bottom: 12px;
+        /* 
+          border-bottom: 4px solid transparent; 
+          구문은 미리 4px 두께의 실선 공간을 투명하게 만들어 두는 역할을 했습니다. 
+          그래야 색상만 #222로 바꿨을 때 선이 보입니다.
+        */
+        border-bottom: 4px solid transparent;
+        /* border-bottom: 4px solid #222; */
+      }
+      ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #menu_wrap {
+        width: 500px;
+        margin: 0 auto;
+      }
+      #menu_wrap a.active {
+        border-bottom-color: #222; /* 호버 시 나타날 두꺼운 줄 */
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="menu_wrap">
+      <ul>
+        <li>
+          <a href="#">베스트</a>
+        </li>
+        <li><a href="#">세일</a></li>
+        <li><a href="#">패션</a></li>
+        <li><a href="#">리빙</a></li>
+        <li><a href="#">신상</a></li>
+      </ul>
+    </nav>
+
+    <script>
+      let menuList = document.querySelectorAll('#menu_wrap  a');
+      console.log('메뉴: ', menuList);
+
+      // menuList.forEach((item) => {
+      //   // 여기서 item은 각각의 a태그 임
+      //   // 마우스 올릴 때
+      //   item.addEventListener('mouseenter', () => {
+      //     // 각각의 a태그에 class 이름을 'active'로 추가한다.
+      //     item.classList.add('active');
+      //     console.log('버튼 호버시 :', item);
+      //   });
+      //   // 마우스 아웃할 때
+      //   item.addEventListener('mouseleave', () => {
+      //     item.classList.remove('active');
+      //     console.log('버튼 아웃시 :', item);
+      //   });
+      // });
+
+      for (let i = 0; i < menuList.length; i++) {
+        menuList[i].addEventListener('mouseover', () => {
+          // 각각의 a태그에 class 이름을 'active'로 추가한다.
+          menuList[i].classList.add('active');
+        });
+
+        menuList[i].addEventListener('mouseout', () => {
+          menuList[i].classList.remove('active');
+        });
+      }
+    </script>
+  </body>
+</html>

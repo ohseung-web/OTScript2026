@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>키오스크</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+
+      /* 메인 키오스크 컨테이너 */
+      .container {
+        display: flex;
+        width: 950px;
+        height: 680px;
+        margin: 0 auto;
+        background-color: #fff;
+        border: 2px solid #333;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+
+      /* 1. 왼쪽: 메뉴판 영역 */
+      .menu-container {
+        flex: 2;
+        padding: 20px;
+        border-right: 2px dashed #ddd;
+        overflow-y: auto;
+      }
+
+      .menu-header {
+        margin-bottom: 15px;
+      }
+
+      .menu-header h6 {
+        font-size: 18px;
+        color: #333;
+      }
+
+      .menu-header p {
+        font-size: 12px;
+        color: #777;
+      }
+
+      /* 메뉴 그리드 리스트 */
+      #menu {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        list-style: none;
+      }
+
+      .product {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        background-color: #fafafa;
+        cursor: pointer;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+      }
+
+      .product:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .product img {
+        width: 100%;
+        height: 70px;
+        object-fit: contain;
+        margin-bottom: 6px;
+      }
+
+      .menu-temp {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-bottom: 4px;
+      }
+
+      .HOT {
+        background-color: #ffebee;
+        color: #d32f2f;
+      }
+
+      .ICE {
+        background-color: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .menu-name {
+        font-size: 13px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 2px;
+      }
+
+      .menu-price {
+        font-size: 12px;
+        color: #666;
+      }
+
+      /* 2. 오른쪽: 주문내역 영역 */
+      .order-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background-color: #fafafa;
+      }
+
+      .order-container h4 {
+        font-size: 16px;
+        color: #333;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #333;
+      }
+
+      /* 주문 아이템 리스트 */
+      .order-list {
+        flex: 1;
+        overflow-y: auto;
+        margin-top: 10px;
+      }
+
+      #orderitem {
+        list-style: none;
+      }
+
+      #orderitem li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .order-info {
+        flex: 1;
+      }
+
+      .order-info .title {
+        font-weight: bold;
+        color: #333;
+      }
+
+      .order-info .price {
+        color: #e53935;
+        font-weight: bold;
+      }
+
+      /* 수량 조절/삭제 버튼그룹 */
+      .btn-group {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .btn-group button {
+        width: 22px;
+        height: 22px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+      }
+
+      .btn-group button.btn-delete {
+        background-color: #ffebee;
+        color: #c62828;
+        border-color: #ef9a9a;
+        margin-left: 4px;
+      }
+
+      /* 총 결제 금액 영역 */
+      .total-area {
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 2px solid #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .total-price {
+        color: #e53935;
+        font-size: 18px;
+      }
+      /* 주문 목록 영역 높이 및 레이아웃 이동 방지 */
+      #orderitem {
+        list-style: none;
+        contain: content; /* 화면 재계산 범위를 해당 요소 내부로 제한 */
+      }
+
+      #orderitem li {
+        height: 50px; /* 높이를 고정하여 리플로우 방지 */
+        will-change: transform; /* 브라우저 렌더링 최적화 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 1. 왼쪽: 메뉴판 영역 -->
+      <div class="menu-container">
+        <div class="menu-header">
+          <h6>원하시는 음료를 선택해 주세요</h6>
+          <p>Please choose the drink you want</p>
+        </div>
+        <ul id="menu"></ul>
+      </div>
+
+      <!-- 2. 오른쪽: 주문내역 영역 -->
+      <div class="order-container">
+        <h4>주문내역</h4>
+        <div class="order-list">
+          <ul id="orderitem"></ul>
+        </div>
+        <div class="total-area">
+          <span>총 결제금액</span>
+          <span class="total-price" id="totalPrice">0원</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let menu = document.getElementById('menu');
+      let orderitem = document.getElementById('orderitem');
+      let totalPriceEl = document.getElementById('totalPrice');
+
+      // 원본 데이터 (DB 역할)
+      let menus = [
+        { id: 0, name: '아메리카노', type: 'HOT', price: 1000 },
+        { id: 1, name: '아메리카노', type: 'ICE', price: 1300 },
+        { id: 2, name: '바닐라라떼', type: 'HOT', price: 2500 },
+        { id: 3, name: '바닐라라떼', type: 'ICE', price: 2800 },
+        { id: 4, name: '연유라떼', type: 'HOT', price: 2500 },
+        { id: 5, name: '연유라떼', type: 'ICE', price: 2800 },
+        { id: 6, name: '카라멜마끼아또', type: 'HOT', price: 2800 },
+        { id: 7, name: '카라멜마끼아또', type: 'ICE', price: 3000 },
+        { id: 8, name: '카페모카', type: 'HOT', price: 3000 },
+        { id: 9, name: '카페모카', type: 'ICE', price: 3300 },
+        { id: 10, name: '딥카페라테', type: 'HOT', price: 3400 },
+        { id: 11, name: '딥카페라테', type: 'ICE', price: 3700 },
+      ];
+
+      // 주문 상품을 담는 장바구니 배열
+      let cart = [];
+
+      // 1. 메뉴판 화면 출력 함수
+      function render() {
+        let result = '';
+        for (let i = 0; i < menus.length; i++) {
+          result += `<li class="product" onclick="add(${i})">
+                        <img src="/images/${i}.png" alt="${menus[i].type}${menus[i].name}" onerror="this.src='https://via.placeholder.com/70?text=Coffee'">
+                        <span class="menu-temp ${menus[i].type}">${menus[i].type}</span>
+                        <div class="menu-name">${menus[i].name}</div>
+                        <div class="menu-price">${menus[i].price.toLocaleString('ko-KR')}원</div>
+                     </li>`;
+        }
+        menu.innerHTML = result;
+      }
+
+      render();
+
+      // 2. 장바구니(cart) 화면 & 총금액 출력 함수
+      function renderCart() {
+        let resultorder = '';
+        let sum = 0;
+
+        for (let i = 0; i < cart.length; i++) {
+          let itemTotal = cart[i].price * cart[i].quantity;
+          sum += itemTotal;
+
+          resultorder += `<li>
+                            <div class="order-info">
+                              <div class="title">${cart[i].name} (${cart[i].type})</div>
+                              <div class="price">${itemTotal.toLocaleString('ko-KR')}원</div>
+                            </div>
+                            <div class="btn-group">
+                              <button onclick="minus(${i})">-</button>
+                              <span>${cart[i].quantity}</span>
+                              <button onclick="plus(${i})">+</button>
+                              <button class="btn-delete" onclick="deleteitem(${i})">✕</button>
+                            </div>
+                          </li>`;
+        }
+        orderitem.innerHTML = resultorder;
+        totalPriceEl.textContent = `${sum.toLocaleString('ko-KR')}원`;
+      }
+
+      // 3. 상품 추가 함수
+      function add(index) {
+        let findItem = cart.find((item) => item.id === menus[index].id);
+
+        if (findItem) {
+          findItem.quantity++;
+        } else {
+          cart.push({
+            id: menus[index].id,
+            name: menus[index].name,
+            type: menus[index].type,
+            price: menus[index].price,
+            quantity: 1,
+          });
+        }
+        renderCart();
+      }
+
+      // 4. 수량 증가
+      function plus(cartIndex) {
+        cart[cartIndex].quantity++;
+        renderCart();
+      }
+
+      // 5. 수량 감소
+      function minus(cartIndex) {
+        if (cart[cartIndex].quantity > 1) {
+          cart[cartIndex].quantity--;
+        } else {
+          alert('수량은 최소 1개 이상이어야 합니다.');
+        }
+        renderCart();
+      }
+
+      // 6. 삭제
+      function deleteitem(cartIndex) {
+        cart.splice(cartIndex, 1);
+        renderCart();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+@charset "utf-8";
+
+/* body부분에 font-family지정하면
+input과 button은 적용받지 못한다. */
+/* css순서:1번 */
+* {
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+/* css순서:2번 */
+body {
+  font-weight: 300;
+  color: #222;
+  font-size: 15px;
+  line-height: 1.6em;
+}
+/* css순서:3번 */
+.modal {
+  /* 모달은 어디에서 눌러도 고정되어야 함 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* 위에서 아래로 애니메이션 */
+  /* transform: translate(-50%, -80%); */
+  /* modal에 z-index를 입력하면 위로 올라온다. */
+  z-index: 10;
+  /* 처음 opacity: 0; */
+  opacity: 0;
+  transition: 0.5s;
+}
+/* css순서:4번 */
+.modal-content {
+  /* border: 1px solid #000; */
+  width: 600px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.15);
+  /* 배경색을 주지 않으면 화면에 안보임 */
+  background-color: #fff;
+  display: flex;
+  /* 이미지 잘림 현상을 없앤다. */
+  overflow: hidden;
+}
+/* css순서:5번 */
+.modal-content > div {
+  padding: 20px;
+}
+/* css순서:6번 */
+.photo {
+  flex: 1;
+  /* 배경 이미지의 경로를 지정합니다. */
+  background: url(../images/office.jpg);
+  /* 배경 이미지가 반복되어 출력되지 않도록 설정합니다. */
+  background-repeat: no-repeat;
+  /* 배경 이미지의 위치를 오른쪽으로 정렬합니다. */
+  background-position: right;
+  /* 이미지가 요소의 크기에 맞게 채워지도록 
+  비율을 유지하며 확대/축소합니다. */
+  background-size: cover;
+}
+
+/* css순서:7번 */
+.desc {
+  flex: 2;
+  text-align: center;
+}
+/* css순서:8번 */
+.overlay {
+  /* 오버레이를 6번째로 설정한다. */
+  /* 오버레이가 모달을 완전히 덮어 버렸다. 그럼 안되는 것이기때문에 */
+  /* 포지션 속성이 둘 다 존재할 때는 늦게나온 놈이 우선권이 있다. */
+  /* z-index를 정의하지 않으면 0이 된다. */
+  /* overlay가 html에 늦게 작성되었기 때문에 위에 있다. */
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  /* 위치를 왼쪽 상단에 맞추기 */
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+  /* 오버레이가 전체를 덮고있어서 버튼을 누를 수 없다. 
+     그래서 다만들고 나면 visibility: hidden을 입력한다.
+  */
+  /* pointer-events: none;의 의미는 존재하지만 마우스 클릭을 받지 않겠다는 의미 */
+  /* pointer-events: none; */
+  visibility: hidden;
+}
+
+/* css순서:9번  */
+.btn-close {
+  /* modal에 position: fixed;를 설정해서
+     부모로 인식하기때문에  position: absolute;
+     지정하고 top하고, right를 해도 도망가지 않는다.
+  */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent; /* 배경 투명 */
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+}
+/* css순서:10번  */
+.desc .desc-content input[type='email'] {
+  /* 인라인요소이다. */
+  /* input, button은 display:block로 변경해도 width:100%가 되지 않는다.
+     그래서 width:100%로 지정해야 한다.
+  */
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 7px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+/* css순서:10번  */
+.desc .desc-content button {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: crimson;
+  color: #fff;
+  cursor: pointer;
+  padding: 7px;
+  outline: none;
+}
+/* css순서:11번 */
+.desc .desc-content input[type='email']::placeholder {
+  color: #bbb;
+  transition: 0.5s;
+}
+/* 입력요소를 누른다는 focus라는 가상요소를 말한다. */
+.desc .desc-content input[type='email']:focus::placeholder {
+  /* display:none은 사라지는 기능이라 할 수 없다. */
+  visibility: hidden;
+  /* 클릭 시 transition을 받기위해 넣음*/
+  opacity: 0;
+}
+
+/* 자바스크립트 코드짠 뒤 CSS */
+.modal.active {
+  opacity: 1;
+  /* transform: translate(-50%, -50%); */
+}
+.overlay.active {
+  opacity: 1;
+  /* pointer-events: all; */
+  visibility: visible;
+}
+.btn-close:hover {
+  color: #000;
+}

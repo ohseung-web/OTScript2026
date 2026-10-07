@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modal</title>
+    <link rel="stylesheet" href="/style/ex_modal.css" />
+    <!-- 외부 자바스크립트 파일 연결하는 방법 -->
+    <!-- <head> 안에 defer 속성을 붙여 연결 -->
+    <!-- defer를 사용해야 하는 이유
+        에러 방지: 자바스크립트에서 document.querySelector('.btn-open') 등을 실행할 때, 
+        HTML 요소가 로드되기 전에 JS가 먼저 실행되면 요소를 찾지 못해 
+        오류(Uncaught TypeError: Cannot read properties of null)가 발생한다. 
+       defer을 입력하면 HTML 해석이 완전히 끝난 후에 자바스크립트 코드를 실행합니다.
+   -->
+    <script src="../js/ex_modal.js" defer></script>
+  </head>
+  <body>
+    <!-- 모달을 플러그인을 사용하지 않고 만들기 -->
+    <button class="btn-open">뉴스레터 구독하기</button>
+
+    <!--  -->
+    <div class="modal">
+      <!-- 모달 내용 -->
+      <div class="modal-content">
+        <div class="photo"></div>
+        <!-- description : 내용 -->
+        <div class="desc">
+          <div class="desc-header">
+            <h2>지금 다양한 혜택을 받아보세요.</h2>
+            <button class="btn-close">&times;</button>
+          </div>
+          <div class="desc-content">
+            <input type="email" placeholder="이메일 주소를 입력하세요" />
+            <button type="button">뉴스레터 구독하기</button>
+            <p>
+              스타트업메이트 뉴스룸의 다양한 소식과 혜택을 이메일로 받아
+              보시려면 구독 신청 해주시기 바랍니다. 스타트업메이트에 대해 알고
+              싶은 뉴스, 꼭 알아야 할 뉴스를 신속하고 정확하게 전합니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 오버레이 => 모달하고 따로 만들기위해-->
+    <div class="overlay"></div>
+
+    <!-- <script>
+      let btnOpen = document.querySelector('.btn-open');
+      let btnClose = document.querySelector('.btn-close');
+      let modal = document.querySelector('.modal');
+      let overlay = document.querySelector('.overlay');
+      // 모달 열기
+      btnOpen.addEventListener('click', () => {
+        modal.classList.add('active');
+        overlay.classList.add('active');
+      });
+      // 모달 닫기
+      btnClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+
+      // 오버레이 클릭시 모달 닫기
+      overlay.addEventListener('click', () => {
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    </script> -->
+  </body>
+</html>

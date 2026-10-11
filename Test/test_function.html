@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>함수</title>
+  </head>
+  <body>
+    <script>
+      // 선언적 함수
+      //sayHello(); //오류 없이 실행됨
+      //  function sayHello() {
+      //    console.log('Hello');
+      //  }
+      // sayHello(); //오류 없이 실행됨
+
+      // 익명함수(대입형 함수)
+      // sayHello(); //에러발생
+      //  let sayHello = function () {
+      //    console.log('Hello');
+      //  };
+      //  sayHello(); //오류없이 실행됨
+
+      함수();
+      함수 = function () {
+        // 2. 나중에 실행됨
+        console.log('익명함수 입니다');
+      };
+      function 함수() {
+        // 1. 먼저 만들어짐
+        console.log('선언적 함수입니다');
+      }
+      함수();
+
+      function sayHello() {
+        return 'Hello,';
+      }
+
+      function greeting(helloMessage, name) {
+        console.log(helloMessage() + name);
+      } // 'sayHello'를 greeting함수에 인자로 전달 함
+
+      greeting(sayHello, 'javaScript');
+
+      // 화살표 함수
+      // 함수 표현식(=익명 함수)보다 단순하고 간결한 문법으로 함수를 만들 수 있는
+      // 방법으로 화살표 함수(arrow function)를 사용할 수 있다.
+      let sum = (a, b) => a + b;
+      console.log('합계:', sum(2, 5));
+      // 위 sum과 아래 sum02는 같은 의미이다.
+      let sum02 = function (a, b) {
+        return a + b;
+      };
+      console.log('합계:', sum02(2, 8));
+
+      let sum03 = (a, b) => {
+        let result = a + b;
+        return result;
+      };
+      console.log('합계:', sum03(3, 8));
+
+      // 즉시 실행함수
+      (function () {
+        console.log('Hello');
+      })();
+      // 화살표 함수로도 사용 가능
+      (() => {
+        console.log('JavaScript');
+      })();
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -176,7 +176,7 @@
       function updateOrder(orderIndex) {
         let quantEm = document.querySelector(`em[emindex="${orderIndex}"]`);
         let priceSpan = document.querySelector(
-          `span[spanindex="${orderIndex}"]`
+          `span[spanindex="${orderIndex}"]`,
         );
         quantEm.textContent = orderListArr[orderIndex].quantity;
         priceSpan.textContent = (

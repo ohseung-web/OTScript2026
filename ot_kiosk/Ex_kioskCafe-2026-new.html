@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>kioskCafe</title>
+    <link rel="stylesheet" href="kioskCafe-2026-new.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="order_menu">
+        <h2>원하시는 음료를 선택해 주세요</h2>
+        <p>Please choose the drink you want.</p>
+
+        <!-- MENU 텍스트를 제거하고 카테고리 탭 버튼만 배치 -->
+        <div class="category_btn_box">
+          <button
+            type="button"
+            class="tab-btn active"
+            onclick="filterMenu('all', this)"
+          >
+            전체
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            onclick="filterMenu('coffee', this)"
+          >
+            커피
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            onclick="filterMenu('drink', this)"
+          >
+            음료
+          </button>
+        </div>
+
+        <div class="section1">
+          <div class="menubox"></div>
+        </div>
+      </div>
+
+      <div class="order_list">
+        <div class="section2">
+          <h2>주문내역</h2>
+          <div class="orderbox"></div>
+        </div>
+      </div>
+
+      <div class="order_result">
+        <h2>총 주문금액 : <span class="pay">0원</span></h2>
+        <span class="line">&boxv;</span>
+        <button class="btn">현금결제</button>
+      </div>
+    </div>
+
+    <script>
+      let menus = [
+        // 커피 메뉴
+        {
+          id: 0,
+          name: '아메리카노',
+          type: 'HOT',
+          price: 1000,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 1,
+          name: '아메리카노',
+          type: 'ICE',
+          price: 1300,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 2,
+          name: '바닐라라떼',
+          type: 'HOT',
+          price: 2500,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 3,
+          name: '바닐라라떼',
+          type: 'ICE',
+          price: 2800,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 4,
+          name: '연유라떼',
+          type: 'HOT',
+          price: 2500,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 5,
+          name: '연유라떼',
+          type: 'ICE',
+          price: 2800,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 6,
+          name: '카라멜마끼아또',
+          type: 'HOT',
+          price: 2800,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 7,
+          name: '카라멜마끼아또',
+          type: 'ICE',
+          price: 3000,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 8,
+          name: '카페모카',
+          type: 'HOT',
+          price: 3000,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 9,
+          name: '카페모카',
+          type: 'ICE',
+          price: 3300,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 10,
+          name: '딥카페라테',
+          type: 'HOT',
+          price: 3400,
+          quantity: 1,
+          category: 'coffee',
+        },
+        {
+          id: 11,
+          name: '딥카페라테',
+          type: 'ICE',
+          price: 3700,
+          quantity: 1,
+          category: 'coffee',
+        },
+
+        // 음료 메뉴
+        {
+          id: 12,
+          name: '레몬에이드',
+          type: 'ICE',
+          price: 2500,
+          quantity: 1,
+          category: 'drink',
+        },
+        {
+          id: 13,
+          name: '자몽에이드',
+          type: 'ICE',
+          price: 2800,
+          quantity: 1,
+          category: 'drink',
+        },
+        {
+          id: 14,
+          name: '복숭아아이스티',
+          type: 'ICE',
+          price: 2200,
+          quantity: 1,
+          category: 'drink',
+        },
+        {
+          id: 15,
+          name: '초코라떼',
+          type: 'HOT',
+          price: 3000,
+          quantity: 1,
+          category: 'drink',
+        },
+        {
+          id: 16,
+          name: '딸기라떼',
+          type: 'ICE',
+          price: 3500,
+          quantity: 1,
+          category: 'drink',
+        },
+      ];
+
+      let menubox = document.querySelector('.menubox');
+      let orderbox = document.querySelector('.orderbox');
+      let pay = document.querySelector('.pay');
+      let orderListArr = [];
+
+      function menuList(targetMenus = menus) {
+        let menuslist = '<ul>';
+        for (let i = 0; i < targetMenus.length; i++) {
+          let originalIndex = menus.findIndex(
+            (m) => m.id === targetMenus[i].id,
+          );
+
+          if (targetMenus[i].type === 'HOT') {
+            menuslist += `<li class="hot" onclick="orderList(${originalIndex})">`;
+          } else {
+            menuslist += `<li class="ice" onclick="orderList(${originalIndex})">`;
+          }
+          // 이미지 형태의 그리드 카드 UI 구조로 출력
+          menuslist += `<div class="icon-wrap"><i></i></div>`;
+          menuslist += `<span class="badge">${targetMenus[i].type}</span>`;
+          menuslist += `<strong>${targetMenus[i].name}</strong>`;
+          menuslist += `<em>${targetMenus[i].price.toLocaleString('ko-kr')}원</em>`;
+          menuslist += `</li>`;
+        }
+        menuslist += '</ul>';
+        menubox.innerHTML = menuslist;
+      }
+
+      // 필터 함수 및 활성화 클래스(active) 토글 기능
+      function filterMenu(category, btnElement) {
+        // 모든 버튼에서 active 제거 후 클릭한 버튼에만 추가
+        let buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach((btn) => btn.classList.remove('active'));
+        if (btnElement) btnElement.classList.add('active');
+
+        if (category === 'all') {
+          menuList(menus);
+        } else {
+          let filteredMenus = menus.filter(
+            (item) => item.category === category,
+          );
+          menuList(filteredMenus);
+        }
+      }
+
+      menuList();
+
+      function orderList(orderIndex) {
+        let check = -1;
+        for (let j = 0; j < orderListArr.length; j++) {
+          if (orderListArr[j].id === menus[orderIndex].id) {
+            check = j;
+            break;
+          }
+        }
+
+        if (check > -1) {
+          orderListArr[check].quantity++;
+          let quantEm = document.querySelector(`em[emindex="${check}"]`);
+          let priceSpan = document.querySelector(`span[spanindex="${check}"]`);
+          quantEm.textContent = orderListArr[check].quantity + '개';
+          priceSpan.textContent =
+            (
+              orderListArr[check].quantity * orderListArr[check].price
+            ).toLocaleString('ko-kr') + ' 원';
+        } else {
+          insertOrder(orderIndex);
+        }
+      }
+
+      function insertOrder(orderIndex) {
+        orderListArr.push({
+          id: menus[orderIndex].id,
+          name: menus[orderIndex].name,
+          type: menus[orderIndex].type,
+          price: menus[orderIndex].price,
+          quantity: menus[orderIndex].quantity,
+        });
+        orderlistDisplay();
+        totalMoney();
+      }
+
+      function orderlistDisplay() {
+        orderbox.innerHTML = '';
+        for (let i = 0; i < orderListArr.length; i++) {
+          orderbox.innerHTML += `<div class="orderlist" listindex="${i}"><p>
+            ${orderListArr[i].name}(<span class="${orderListArr[i].type === 'HOT' ? 'text-hot' : 'text-ice'}">${orderListArr[i].type}</span>) 
+            <em emindex="${i}">${orderListArr[i].quantity}개</em>, 
+            <span spanindex="${i}">${(orderListArr[i].quantity * orderListArr[i].price).toLocaleString('ko-kr')} 원</span></p>
+            <div class="order-btn-group">
+              <button type="button" onclick="minus(${i});">-</button>
+              <button type="button" onclick="plus(${i});">+</button>
+              <button type="button" onclick="remove(${i});">×</button>
+            </div></div>`;
+        }
+      }
+
+      function plus(orderIndex) {
+        orderListArr[orderIndex].quantity++;
+        updateOrder(orderIndex);
+        totalMoney();
+      }
+
+      function minus(orderIndex) {
+        if (orderListArr[orderIndex].quantity > 1) {
+          orderListArr[orderIndex].quantity--;
+          updateOrder(orderIndex);
+        } else {
+          alert('수량은 1개 이상이어야 합니다.');
+        }
+        totalMoney();
+      }
+
+      function updateOrder(orderIndex) {
+        let quantEm = document.querySelector(`em[emindex="${orderIndex}"]`);
+        let priceSpan = document.querySelector(
+          `span[spanindex="${orderIndex}"]`,
+        );
+        quantEm.textContent = orderListArr[orderIndex].quantity + '개';
+        priceSpan.textContent =
+          (
+            orderListArr[orderIndex].quantity * orderListArr[orderIndex].price
+          ).toLocaleString('ko-kr') + ' 원';
+      }
+
+      function remove(orderIndex) {
+        orderListArr.splice(orderIndex, 1);
+        orderlistDisplay();
+        totalMoney();
+      }
+
+      function totalMoney() {
+        let totalMoney = 0;
+        for (let i = 0; i < orderListArr.length; i++) {
+          totalMoney += orderListArr[i].quantity * orderListArr[i].price;
+        }
+        pay.textContent = totalMoney.toLocaleString('ko-kr') + '원';
+      }
+    </script>
+  </body>
+</html>

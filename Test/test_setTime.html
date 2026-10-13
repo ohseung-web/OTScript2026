@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>setTimeOut 함수</title>
+  </head>
+  <body>
+    <div id="clock"></div>
+
+    <script>
+      let timerId;
+      // 1밀리초=0.001초, 10밀리초=0.01초, 2500밀리초= 2.5초
+      function repeatTask() {
+        console.log('1초마다 안전하게 반복 실행됩니다!');
+
+        // 내부 작업이 끝난 후 다음 타이머를 다시 설정 (재귀 호출)
+        timerId = setTimeout(repeatTask, 1000);
+      }
+
+      // 첫 번째 반복 실행 시작
+      // timerId = setTimeout(repeatTask, 1000);
+      repeatTask();
+
+      // 예시: 5초 뒤에 반복 타이머 중지하기
+      setTimeout(() => {
+        clearTimeout(timerId);
+        console.log('반복 타이머가 중지되었습니다.');
+      }, 5000);
+
+      // --------
+      function setClock() {
+        let now = new Date();
+        let s =
+          now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+        document.getElementById('clock').innerHTML = s;
+
+        // 문자열 대신 함수 참조를 전달하도록 수정
+        setTimeout(setClock, 1000);
+      }
+
+      setClock();
+
+      // -----------
+
+      let count = 0;
+
+      let timer = setInterval(() => {
+        count++;
+        console.log(`${count}초마다 실행됩니다.`);
+
+        // 조건문을 콜백 함수 내부로 이동
+        if (count === 5) {
+          clearInterval(timer);
+          console.log('5번 실행 후 종료되었습니다.');
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

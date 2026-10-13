@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>setTimeOut 함수</title>
+  </head>
+  <body>
+    <script>
+      let count = 0;
+
+      let timer = setInterval(() => {
+        count++;
+        console.log(`${count}초마다 실행됩니다.`);
+
+        // 조건문을 콜백 함수 내부로 이동
+        if (count === 5) {
+          clearInterval(timer);
+          console.log('5번 실행 후 종료되었습니다.');
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
